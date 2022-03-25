@@ -6,6 +6,9 @@ const { ApolloServer } = require('apollo-server-express');
 // Import typeDefs and resolvers
 const { typeDefs, resolvers } = require('./schemas');
 
+// Import the middleware function
+const { authMiddleware } = require('./utils/auth');
+
 // Import connection data to DB
 const db = require('./config/connection');
 
@@ -18,7 +21,10 @@ const startServer = async () => {
   const server = new ApolloServer ({
     typeDefs,
     resolvers,
-    //context: authMiddleware
+    // "context" is used to set what is passed via the context param in resolvers
+    // In this case, it's set to take in an auth token
+    // authMiddleware is a function that reads & verifies the token in a user's API request
+    context: authMiddleware 
   });
 
   // Start the apollo server
