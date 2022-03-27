@@ -12,7 +12,7 @@ const resolvers = {
         // 'context' param is where the Auth token is passed through
         me: async (parent, args, context) => {
             if (context.user) {
-                const userData = await User.findOne({})
+                const userData = await User.findById(context.user._id)
                     .select('-__v -password')
                     .populate('thoughts')
                     .populate('friends');
